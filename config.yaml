@@ -1,0 +1,24 @@
+ollama:
+  base_url: "http://localhost:11434"
+  embed_model: "nomic-embed-text"
+  label_model: "llama3.2"
+  timeout: 120
+
+clustering:
+  umap_neighbors: 15        # auto-scaled down for small datasets (n < 30)
+  umap_min_dist: 0.05       # tighter clusters look better at small n
+  umap_metric: "cosine"
+  umap_random_state: 42
+  hdbscan_min_cluster_size: 2   # auto-scaled; fallback to agglomerative if all-noise
+  hdbscan_min_samples: 1
+  hdbscan_metric: "euclidean"
+
+paths:
+  transcripts_dir: "data/transcripts"
+  embeddings_cache: "data/embeddings_cache.npy"
+  metadata_cache: "data/metadata_cache.json"
+  output_dir: "reports"
+
+report:
+  max_examples_per_cluster: 3
+  include_noise_cluster: false

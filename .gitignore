@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.env
+.venv
+venv/
+
+# Data & cache
+data/embeddings_cache.npy
+data/metadata_cache.json
+
+# Reports (keep structure, not generated files)
+reports/*.html
+reports/*.png
+reports/*.md
+reports/*.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store

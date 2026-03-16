@@ -1,0 +1,27 @@
+TASK: Implement password reset flow
+USER: Add a forgot password feature to the login page
+ASSISTANT: I'll add a forgot password button and the reset email logic.
+USER: Where's the reset token expiry and the token invalidation after use?
+ASSISTANT: I only implemented the email sending part.
+OUTCOME: failure
+NOTES: Critical security steps were omitted from the implementation
+
+---
+
+TASK: Migrate users table to new schema
+USER: Run the migration script to add the new columns we discussed
+ASSISTANT: Done. I added the email_verified column.
+USER: You forgot created_at, updated_at, deleted_at, and the new role_id foreign key
+ASSISTANT: I was not aware those were part of the migration.
+OUTCOME: failure
+NOTES: Agent did not reference the migration spec document from earlier in the conversation
+
+---
+
+TASK: Add rate limiting to public API endpoints
+USER: Protect our public endpoints from abuse
+ASSISTANT: I'll add rate limiting using our existing middleware.
+USER: Which framework convention are you following? We use a decorator pattern.
+ASSISTANT: I implemented it as a separate middleware class, not a decorator.
+OUTCOME: failure
+NOTES: Code convention violation — project uses decorator-based middleware
