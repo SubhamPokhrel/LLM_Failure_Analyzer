@@ -9,10 +9,7 @@ Useful for CI, testing, and showcasing without a running Ollama instance.
 
 from __future__ import annotations
 
-import json
 import random
-import uuid
-from pathlib import Path
 
 from rich.console import Console
 

@@ -285,20 +285,45 @@ class ClusterLabeler:
 
     @staticmethod
     def _unpack(parsed: dict) -> tuple[str, FailureCategory, str]:
-        label = str(parsed.get("label") or "").strip() or None
+        raw_label = str(parsed.get("label") or "").strip()
+        raw_category = str(parsed.get("category") or "unknown").strip().lower().strip("'\"")
         description = str(parsed.get("description") or "").strip()
-        cat_str = str(parsed.get("category") or "unknown").strip().lower()
-        # Normalise: strip surrounding quotes, spaces
-        cat_str = cat_str.strip("'\"")
+
+        valid_values = {m.value for m in FailureCategory}
+
+        # Detect swapped fields: LLM put the enum value in "label" and invented
+        # a string in "category". e.g.:
+        #   label="code_convention_violations", category="proposed_solution_without_..."
+        # After the swap raw_category holds the real enum value; derive the human
+        # label from that since the original label slot had no real text.
+        was_swapped = False
+        if raw_label.lower() in valid_values and raw_category not in valid_values:
+            raw_label, raw_category = raw_category, raw_label
+            was_swapped = True
+
+        # Resolve category enum with partial-match fallback
         try:
-            category = FailureCategory(cat_str)
+            category = FailureCategory(raw_category)
         except ValueError:
-            # Try partial match
             category = FailureCategory.UNKNOWN
             for member in FailureCategory:
-                if member.value in cat_str or cat_str in member.value:
+                if member.value in raw_category or raw_category in member.value:
                     category = member
                     break
+
+        if was_swapped:
+            # The only real signal is the category — derive label from it
+            label = category.value.replace("_", " ").title()
+        else:
+            # Humanize snake_case: "hallucinated_apis" -> "Hallucinated Apis"
+            # Leave human labels ("Incomplete Solutions") untouched
+            label = raw_label.strip()
+            if label and "_" in label and label == label.lower():
+                label = label.replace("_", " ").title()
+            # Derive from category if label is empty or too short
+            if not label or len(label) < 3:
+                label = category.value.replace("_", " ").title()
+
         return label, category, description
 
     def _format_examples(self, examples: list[EmbeddedTranscript]) -> str:

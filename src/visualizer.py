@@ -11,8 +11,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import plotly.graph_objects as go
-import plotly.express as px
-from plotly.subplots import make_subplots
 
 from src.models import AnalysisReport, ClusterResult, EmbeddedTranscript
 

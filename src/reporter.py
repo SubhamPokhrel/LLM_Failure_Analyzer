@@ -7,7 +7,6 @@ from the analysis results.
 
 from __future__ import annotations
 
-import json
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -143,9 +142,9 @@ def _render_markdown(report: AnalysisReport) -> str:
                 lines += [
                     f"<details><summary>Example {j}</summary>",
                     "",
-                    f"```",
+                    "```",
                     excerpt,
-                    f"```",
+                    "```",
                     "",
                     "</details>",
                     "",

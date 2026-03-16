@@ -17,8 +17,6 @@ from pathlib import Path
 import click
 from rich.console import Console
 
-from src.pipeline import PipelineConfig
-
 console = Console()
 
 # Add project root to path
@@ -182,7 +180,7 @@ def demo(output_dir, n):
     Generate synthetic failure transcripts and run the full pipeline.
     Useful for testing without real data or Ollama.
     """
-    from src.demo import generate_demo_transcripts, run_demo_pipeline
+    from src.demo import run_demo_pipeline
     console.rule("[bold magenta]Demo Mode[/bold magenta]")
     run_demo_pipeline(n=n, output_dir=output_dir)
 
